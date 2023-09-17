@@ -4,6 +4,8 @@ import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
 import { searchRouter } from './routes/search';
+import Logger from './lib/logger';
+import morganMiddleware from './config/morgan';
 
 const app: Express = express();
 
@@ -12,6 +14,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(morganMiddleware);
 
 app.use('/search', searchRouter);
 
@@ -36,5 +40,5 @@ app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
 });
 
 app.listen(3000, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:3000`);
+  Logger.debug(`⚡️[server]: Server is running at http://localhost:3000`);
 });

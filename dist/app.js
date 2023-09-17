@@ -7,12 +7,15 @@ const http_errors_1 = __importDefault(require("http-errors"));
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const search_1 = require("./routes/search");
+const logger_1 = __importDefault(require("./lib/logger"));
+const morgan_1 = __importDefault(require("./config/morgan"));
 const app = (0, express_1.default)();
 // app.use(logger('dev'));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 // app.use(cookieParser());
 app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));
+app.use(morgan_1.default);
 app.use('/search', search_1.searchRouter);
 app.get('/', function (req, res, next) {
     res.send('Hello World!');
@@ -31,5 +34,5 @@ app.use(function (err, req, res, next) {
     res.render('error');
 });
 app.listen(3000, () => {
-    console.log(`⚡️[server]: Server is running at http://localhost:3000`);
+    logger_1.default.debug(`⚡️[server]: Server is running at http://localhost:3000`);
 });

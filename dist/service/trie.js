@@ -1,24 +1,23 @@
 "use strict";
 // export default class Trie {}
 class Trie {
-    constructor() {
-        this.children = {};
+    constructor(isEnd) {
+        this.children = new Map();
         this.isEnd = false;
+        this.isEnd = isEnd || false;
     }
     add(word) {
-        [...word].forEach((l, i) => {
-            Trie.addLetter(l, i === word.length - 1, this);
-        });
+        const chars = [...word];
+        Trie.addLetters(chars, this);
     }
-    toString() {
-        return JSON.stringify(this, null, 2);
-    }
-    static addLetter(letter, isEnd, currNode) {
+    static addLetters(letters, currNode) {
         // add if missing
-        if (!currNode.children[letter]) {
-            currNode.children[letter] = new Trie();
+        if (!currNode.children.has(letters[0])) {
+            currNode.children.set(letters[0], new Trie(letters.length === 1));
         }
-        // set values
-        currNode.children[letter].isEnd = isEnd;
+        // thank you, next
+        if (letters.length > 1) {
+            this.addLetters(letters.slice(1), currNode.children.get(letters[0]));
+        }
     }
 }
