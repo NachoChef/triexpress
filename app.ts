@@ -3,9 +3,9 @@ import { Express, NextFunction, Request, Response } from 'express';
 import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
-import { searchRouter } from './routes/search';
-import Logger from './lib/logger';
-import morganMiddleware from './config/morgan';
+import { searchRouter } from './src/routes/search';
+import Logger from './src/lib/logger';
+import morganMiddleware from './src/config/morgan';
 
 const app: Express = express();
 
